@@ -1,21 +1,14 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 
-import {StyleSheet, Text, View} from 'react-native';
+import WelcomeStack from './src/navigation/WelcomeStack';
 
 function App(): React.JSX.Element {
   return (
-    <View style={styles.container}>
-      <Text>{'Hello Swivel!'}</Text>
-    </View>
+    <NavigationContainer>
+      <WelcomeStack />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default App;
