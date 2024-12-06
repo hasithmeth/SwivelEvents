@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     marginBottom: 8,
     paddingHorizontal: 16,
+    color: colors.textLabel,
   },
   inputContainer: {
     height: 48,
