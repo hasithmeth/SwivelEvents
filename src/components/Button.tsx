@@ -9,9 +9,15 @@ interface IButton {
   label: string;
   onPress: () => void;
   disabled?: boolean;
+  mode?: 'forward' | 'backward';
 }
 
-const Button: React.FC<IButton> = ({ label, onPress, disabled }) => {
+const Button: React.FC<IButton> = ({
+  label,
+  onPress,
+  disabled,
+  mode = 'forward',
+}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -19,11 +25,29 @@ const Button: React.FC<IButton> = ({ label, onPress, disabled }) => {
           onPress();
         }
       }}>
-      <View
-        style={[styles.container, disabled ? styles.disabledContainer : null]}>
-        <Text style={styles.label}>{label}</Text>
-        <FastImage source={icons.arrow_right} style={styles.icon} />
-      </View>
+      {mode === 'forward' ? (
+        <View
+          style={[
+            styles.container,
+            disabled ? styles.disabledContainer : null,
+          ]}>
+          <Text style={styles.label}>{label}</Text>
+          <FastImage source={icons.arrow_right} style={styles.icon} />
+        </View>
+      ) : (
+        <View
+          style={[
+            styles.container,
+            styles.backContainer,
+            disabled ? styles.disabledContainer : null,
+          ]}>
+          <FastImage
+            source={icons.arrow_back}
+            style={[styles.icon, styles.iconBack]}
+          />
+          <Text style={[styles.label, styles.labelBack]}>{label}</Text>
+        </View>
+      )}
     </TouchableWithoutFeedback>
   );
 };
@@ -40,6 +64,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  backContainer: {
+    backgroundColor: colors.inputBackdrop,
+  },
   disabledContainer: {
     opacity: 0.8,
   },
@@ -49,9 +76,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.white,
   },
+  labelBack: {
+    color: colors.textPrimary,
+  },
   icon: {
     height: 20,
     aspectRatio: 1,
-    marginHorizontal: 8,
+    marginLeft: 8,
+  },
+  iconBack: {
+    marginLeft: 0,
+    marginRight: 8,
   },
 });

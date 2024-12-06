@@ -19,6 +19,7 @@ interface ICustomTextInput extends TextInputProps {
   mode?: 'credentials' | 'default';
   error?: string | boolean;
   onChangeFocus?: Function;
+  fontSize?: number;
 }
 
 const TextInput = forwardRef<RNTextInput, ICustomTextInput>((props, ref) => {
@@ -29,6 +30,7 @@ const TextInput = forwardRef<RNTextInput, ICustomTextInput>((props, ref) => {
     mode = 'default',
     onChangeFocus,
     error,
+    fontSize,
   } = props;
 
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -64,6 +66,7 @@ const TextInput = forwardRef<RNTextInput, ICustomTextInput>((props, ref) => {
           style={[
             styles.input,
             icon ? styles.inputPaddingWithIcon : styles.inputPaddingWithoutIcon,
+            fontSize ? { fontSize } : null,
           ]}
           secureTextEntry={isPassword && !passwordVisible}
           numberOfLines={1}

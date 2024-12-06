@@ -40,6 +40,7 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
 
   const handleLogin = (values: { email: string; password: string }) => {
     console.log(values);
+    navigation.replace(SCREENS.PROFILE_PHOTO);
   };
 
   const handleSignupPress = () => {

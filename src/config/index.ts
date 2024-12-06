@@ -2,6 +2,7 @@ export enum SCREENS {
   LOGIN = 'Login',
   SIGNUP = 'Signup',
   PROFILE_PHOTO = 'ProfilePhoto',
+  INFO = 'Info',
 }
 
 export const colors = {
@@ -18,4 +19,5 @@ export const colors = {
   textPrimary: 'rgba(25, 28, 30, 1)',
   textLabel: '#444749',
   textSubtitle: '#757779',
+  profilePlaceholder: '#F1E6E3',
 };

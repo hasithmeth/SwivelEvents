@@ -3,39 +3,35 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FONT } from '../assets/fonts';
 import { colors } from '../config';
 
-interface IWelcome {
-  subTitle: string;
-}
-
-const Welcome: React.FC<IWelcome> = ({ subTitle }) => {
+const InfoTitle = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{'Welcome'}</Text>
-      <Text style={styles.subTitle}>{subTitle}</Text>
+      <Text style={styles.title}>{'Personal info'}</Text>
+      <Text style={styles.subTitle}>
+        {'You can add your personal data now or do it later'}
+      </Text>
     </View>
   );
 };
 
-export default Welcome;
+export default InfoTitle;
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingVertical: 20,
   },
   title: {
     fontFamily: FONT.INTER_SEMI_BOLD,
-    lineHeight: 40,
-    fontSize: 32,
+    fontSize: 19,
+    lineHeight: 24,
     color: colors.textPrimary,
-    bottom: 12,
   },
   subTitle: {
     fontFamily: FONT.NOTOSANS_REGULAR,
     lineHeight: 20,
     fontSize: 14,
     color: colors.textSubtitle,
-    textAlign: 'center',
+    paddingTop: 8,
   },
 });
