@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { SCREENS } from '../config';
+import { colors, SCREENS } from '../config';
 import Login from '../screens/welcome/Login';
 import ProfilePhoto from '../screens/welcome/ProfilePhoto';
 
@@ -17,6 +17,9 @@ const WelcomeStack = () => {
       initialRouteName={SCREENS.LOGIN}
       screenOptions={{
         headerShown: false,
+        cardStyle: {
+          backgroundColor: colors.background,
+        },
       }}>
       <Stack.Screen name={SCREENS.LOGIN} component={Login} />
       <Stack.Screen name={SCREENS.PROFILE_PHOTO} component={ProfilePhoto} />

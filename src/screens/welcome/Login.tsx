@@ -1,18 +1,41 @@
-/* eslint-disable react-native/no-inline-styles */
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { FONT } from '../../assets/fonts';
+import React, { useRef } from 'react';
+import { TextInput as RNTextInput, StyleSheet, View } from 'react-native';
+import icons from '../../assets/icons';
+import TextInput from '../../components/TextInput';
 
 const Login: React.FC = () => {
+  const txtEmailRef = useRef<RNTextInput>(null);
+  const txtPasswordRef = useRef<RNTextInput>(null);
+
+  const handleEmailSubmit = () => {
+    txtPasswordRef.current?.focus();
+  };
+
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          fontSize: 24,
-          fontFamily: FONT.INTER_EXTRA_LIGHT,
-        }}>
-        Login
-      </Text>
+      <TextInput
+        label={'Email'}
+        icon={icons.email_icon}
+        autoCorrect={false}
+        autoCapitalize={'none'}
+        keyboardType={'email-address'}
+        ref={txtEmailRef}
+        onSubmitEditing={handleEmailSubmit}
+        returnKeyType={'next'}
+        mode={'credentials'}
+      />
+      <View style={styles.divider} />
+      <TextInput
+        label={'Password'}
+        isPassword
+        icon={icons.lock_icon}
+        autoCorrect={false}
+        autoCapitalize={'none'}
+        keyboardType={'ascii-capable'}
+        ref={txtPasswordRef}
+        returnKeyType={'go'}
+        mode={'credentials'}
+      />
     </View>
   );
 };
@@ -24,5 +47,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  divider: {
+    height: 16,
   },
 });
