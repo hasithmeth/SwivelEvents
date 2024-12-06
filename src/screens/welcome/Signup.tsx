@@ -13,45 +13,52 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import icons from '../../assets/icons';
 import Button from '../../components/Button';
-import RestorePassword from '../../components/RestorePassword';
 import TextInput from '../../components/TextInput';
 import Welcome from '../../components/Welcome';
-import { WelcomeStackProps } from '../../navigation/WelcomeStack';
 import { SCREENS } from '../../config';
+import { WelcomeStackProps } from '../../navigation/WelcomeStack';
 
 const validationSchema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().min(8).required(),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password'), undefined], 'Passwords must match')
+    .required('Confirm Password is required'),
 });
 
-interface ILogin {
+interface ISignup {
   navigation: WelcomeStackProps;
 }
 
-const Login: React.FC<ILogin> = ({ navigation }) => {
+const Signup: React.FC<ISignup> = ({ navigation }) => {
   const txtEmailRef = useRef<RNTextInput>(null);
   const txtPasswordRef = useRef<RNTextInput>(null);
+  const txtConfirmPasswordRef = useRef<RNTextInput>(null);
 
   const insets = useSafeAreaInsets();
 
   const handleEmailSubmit = () => {
     txtPasswordRef.current?.focus();
   };
+  const handlePasswordSubmit = () => {
+    txtConfirmPasswordRef.current?.focus();
+  };
 
-  const handleLogin = (values: { email: string; password: string }) => {
+  const handleSignup = (values: { email: string; password: string }) => {
     console.log(values);
   };
 
-  const handleSignupPress = () => {
-    navigation.replace(SCREENS.SIGNUP);
+  const handleLoginPress = () => {
+    navigation.replace(SCREENS.LOGIN);
   };
 
   return (
     <Formik
       validationSchema={validationSchema}
       validateOnBlur
-      onSubmit={handleLogin}
-      initialValues={{ email: '', password: '' }}>
+      onSubmit={handleSignup}
+      initialValues={{ email: '', password: '', confirmPassword: '' }}>
       {({
         handleChange,
         handleBlur,
@@ -93,7 +100,8 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
                 autoCapitalize={'none'}
                 keyboardType={'ascii-capable'}
                 ref={txtPasswordRef}
-                returnKeyType={'go'}
+                onSubmitEditing={handlePasswordSubmit}
+                returnKeyType={'next'}
                 mode={'credentials'}
                 value={values.password}
                 onChangeText={handleChange('password')}
@@ -101,18 +109,31 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
                 error={touched.password && errors.password}
               />
               <View style={styles.divider} />
-              <View style={styles.restorePasswordComponent}>
-                <RestorePassword />
-              </View>
+              <TextInput
+                label={'Confirm Password'}
+                isPassword
+                icon={icons.lock_icon}
+                autoCorrect={false}
+                autoCapitalize={'none'}
+                keyboardType={'ascii-capable'}
+                ref={txtConfirmPasswordRef}
+                returnKeyType={'go'}
+                mode={'credentials'}
+                value={values.confirmPassword}
+                onChangeText={handleChange('confirmPassword')}
+                onChangeFocus={handleBlur('confirmPassword')}
+                error={touched.confirmPassword && errors.confirmPassword}
+              />
             </View>
+            <View style={styles.divider} />
             <View style={styles.buttonComponent}>
               <Button
-                label={'Login'}
+                label={'Sign up'}
                 onPress={handleSubmit}
                 disabled={!isValid}
               />
               <View style={styles.divider} />
-              <Button label={'Sign Up'} onPress={handleSignupPress} />
+              <Button label={'Login'} onPress={handleLoginPress} />
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
@@ -121,7 +142,7 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default Signup;
 
 const styles = StyleSheet.create({
   container: {
