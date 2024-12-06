@@ -17,10 +17,19 @@ interface ICustomTextInput extends TextInputProps {
   icon?: Source;
   isPassword?: boolean;
   mode?: 'credentials' | 'default';
+  error?: string | boolean;
+  onChangeFocus?: Function;
 }
 
 const TextInput = forwardRef<RNTextInput, ICustomTextInput>((props, ref) => {
-  const { label, icon, isPassword, mode = 'default' } = props;
+  const {
+    label,
+    icon,
+    isPassword,
+    mode = 'default',
+    onChangeFocus,
+    error,
+  } = props;
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -41,12 +50,14 @@ const TextInput = forwardRef<RNTextInput, ICustomTextInput>((props, ref) => {
       style={[
         styles.container,
         mode === 'credentials' ? credentialsModeBorder : defaultModeBorder,
+        error ? styles.errorBorder : null,
       ]}>
       <Text style={styles.label}>{label}</Text>
       <View
         style={[
           styles.inputContainer,
           isFocused ? styles.inputFocused : styles.inputUnfocused,
+          error ? styles.errorBackdrop : null,
         ]}>
         {icon ? <FastImage source={icon} style={styles.icon} /> : null}
         <RNTextInput
@@ -58,7 +69,10 @@ const TextInput = forwardRef<RNTextInput, ICustomTextInput>((props, ref) => {
           numberOfLines={1}
           ref={ref}
           onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onBlur={e => {
+            setIsFocused(false);
+            onChangeFocus?.(e);
+          }}
           {...props}
         />
         {isPassword ? (
@@ -93,6 +107,9 @@ const styles = StyleSheet.create({
   containerUnfocusedBorder: {
     borderColor: colors.unfocusedBorder,
   },
+  errorBorder: {
+    borderColor: colors.primary,
+  },
   label: {
     fontFamily: FONT.NOTOSANS_MEDIUM,
     fontSize: 13,
@@ -111,6 +128,9 @@ const styles = StyleSheet.create({
   },
   inputUnfocused: {
     backgroundColor: colors.inputBackdrop,
+  },
+  errorBackdrop: {
+    backgroundColor: colors.errorBackdrop,
   },
   input: {
     fontSize: 14,

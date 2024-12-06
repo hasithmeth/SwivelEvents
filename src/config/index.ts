@@ -13,4 +13,5 @@ export const colors = {
   credentialsFocusedBorder: '#CAC7C7',
   unfocusedBorder: '#B2AEAD',
   focusedBorder: '#A8A7A8',
+  errorBackdrop: '#F7B8BF',
 };
