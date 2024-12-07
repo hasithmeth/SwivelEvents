@@ -1,14 +1,15 @@
-import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import WelcomeStack from './src/navigation/WelcomeStack';
+import { Provider } from 'react-redux';
+import RootNavigator from './src/navigation/RootNavigator';
+import { store } from './src/store/store';
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <WelcomeStack />
-      </NavigationContainer>
+      <Provider store={store}>
+        <RootNavigator />
+      </Provider>
     </SafeAreaProvider>
   );
 }

@@ -3,6 +3,8 @@ export enum SCREENS {
   SIGNUP = 'Signup',
   PROFILE_PHOTO = 'ProfilePhoto',
   INFO = 'Info',
+  EDIT_PROFILE = 'EditProfile',
+  BOTTOM_TABS = 'BottomTabs',
 }
 
 export const colors = {
