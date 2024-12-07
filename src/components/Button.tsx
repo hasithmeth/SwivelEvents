@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { FONT } from '../assets/fonts';
 import icons from '../assets/icons';
@@ -10,6 +16,7 @@ interface IButton {
   onPress: () => void;
   disabled?: boolean;
   mode?: 'forward' | 'backward';
+  activity?: boolean;
 }
 
 const Button: React.FC<IButton> = ({
@@ -17,6 +24,7 @@ const Button: React.FC<IButton> = ({
   onPress,
   disabled,
   mode = 'forward',
+  activity = false,
 }) => {
   return (
     <TouchableWithoutFeedback
@@ -31,8 +39,14 @@ const Button: React.FC<IButton> = ({
             styles.container,
             disabled ? styles.disabledContainer : null,
           ]}>
-          <Text style={styles.label}>{label}</Text>
-          <FastImage source={icons.arrow_right} style={styles.icon} />
+          {activity ? (
+            <ActivityIndicator color={colors.white} />
+          ) : (
+            <>
+              <Text style={styles.label}>{label}</Text>
+              <FastImage source={icons.arrow_right} style={styles.icon} />
+            </>
+          )}
         </View>
       ) : (
         <View

@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { RootState } from '../store';
+import Toast from 'react-native-toast-message';
+import { setActivity } from './activitySlice';
 
 interface AuthState {
   user: FirebaseAuthTypes.User | null;
@@ -36,7 +38,7 @@ export const signIn = createAsyncThunk(
   'auth/signIn',
   async (
     { email, password }: { email: string; password: string },
-    { rejectWithValue },
+    { rejectWithValue, dispatch },
   ) => {
     try {
       const userCredential = await auth().signInWithEmailAndPassword(
@@ -45,7 +47,14 @@ export const signIn = createAsyncThunk(
       );
       return userCredential.user; // Return the Firebase User object
     } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Login Failed',
+        text2: 'Please check email and password',
+      });
       return rejectWithValue(error.message);
+    } finally {
+      dispatch(setActivity(false));
     }
   },
 );
