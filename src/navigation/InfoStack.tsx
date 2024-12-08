@@ -8,8 +8,8 @@ import Info from '../screens/welcome/Info';
 import ProfilePhoto from '../screens/welcome/ProfilePhoto';
 
 export type InfoStackParamList = {
-  ProfilePhoto: undefined;
-  Info: undefined;
+  ProfilePhoto: { photoURL?: string };
+  Info: { photoURL: string };
 };
 
 const Stack = createStackNavigator<InfoStackParamList>();
@@ -24,7 +24,11 @@ const InfoStack = () => {
           backgroundColor: colors.background,
         },
       }}>
-      <Stack.Screen name={SCREENS.PROFILE_PHOTO} component={ProfilePhoto} />
+      <Stack.Screen
+        name={SCREENS.PROFILE_PHOTO}
+        component={ProfilePhoto}
+        initialParams={{ photoURL: '' }}
+      />
       <Stack.Screen name={SCREENS.INFO} component={Info} />
     </Stack.Navigator>
   );

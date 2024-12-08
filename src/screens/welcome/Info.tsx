@@ -1,3 +1,4 @@
+import { RouteProp } from '@react-navigation/native';
 import { Formik } from 'formik';
 import React, { useRef } from 'react';
 import {
@@ -13,9 +14,10 @@ import * as yup from 'yup';
 import Button from '../../components/Button';
 import InfoTitle from '../../components/InfoTitle';
 import TextInput from '../../components/TextInput';
-import { WelcomeStackProps } from '../../navigation/WelcomeStack';
-import { useAppDispatch } from '../../hooks';
-import { setNotNewUser } from '../../store/slices/authSlice';
+import { SCREENS } from '../../config';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { InfoStackParamList, InfoStackProps } from '../../navigation/InfoStack';
+import { selectAuth, updateUserProfile } from '../../store/slices/authSlice';
 
 const validationSchema = yup.object().shape({
   firstName: yup.string(),
@@ -25,14 +27,20 @@ const validationSchema = yup.object().shape({
   mailingAddress: yup.string(),
 });
 
+type InfoRouteProp = RouteProp<InfoStackParamList, SCREENS.INFO>;
+
 interface IInfo {
-  navigation: WelcomeStackProps;
+  navigation: InfoStackProps;
+  route: InfoRouteProp;
 }
 
-const Info: React.FC<IInfo> = ({ navigation }) => {
+const Info: React.FC<IInfo> = ({ navigation, route }) => {
+  const { photoURL } = route.params;
+
   const insets = useSafeAreaInsets();
 
   const dispatch = useAppDispatch();
+  const auth = useAppSelector(selectAuth);
 
   const txtLastNameRef = useRef<RNTextInput>(null);
   const txtEmailRef = useRef<RNTextInput>(null);
@@ -62,12 +70,11 @@ const Info: React.FC<IInfo> = ({ navigation }) => {
     phone: string;
     mailingAddress: string;
   }) => {
-    console.log(values);
-    dispatch(setNotNewUser());
+    dispatch(updateUserProfile({ photoURL, ...values }));
   };
 
   const handleGoBack = () => {
-    navigation.goBack();
+    navigation.popTo(SCREENS.PROFILE_PHOTO, { photoURL });
   };
 
   return (
@@ -76,11 +83,11 @@ const Info: React.FC<IInfo> = ({ navigation }) => {
       validateOnBlur
       onSubmit={handleSubmitInfo}
       initialValues={{
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        mailingAddress: '',
+        firstName: auth.user?.firstName || '',
+        lastName: auth.user?.lastName || '',
+        email: auth.user?.email || '',
+        phone: auth.user?.phone || '',
+        mailingAddress: auth.user?.mailingAddress || '',
       }}>
       {({
         handleChange,
@@ -180,6 +187,7 @@ const Info: React.FC<IInfo> = ({ navigation }) => {
                 label={'Next'}
                 onPress={handleSubmit}
                 disabled={!isValid}
+                activity={auth.isLoading}
               />
             </View>
           </View>

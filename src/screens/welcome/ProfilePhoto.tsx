@@ -5,20 +5,29 @@ import Button from '../../components/Button';
 import ProfileImage from '../../components/ProfileImage';
 import Welcome from '../../components/Welcome';
 import { SCREENS } from '../../config';
-import { InfoStackProps } from '../../navigation/InfoStack';
+import { InfoStackParamList, InfoStackProps } from '../../navigation/InfoStack';
+import { RouteProp } from '@react-navigation/native';
+
+type ProfilePhotoRouteProp = RouteProp<
+  InfoStackParamList,
+  SCREENS.PROFILE_PHOTO
+>;
 
 interface IProfilePhoto {
   navigation: InfoStackProps;
+  route: ProfilePhotoRouteProp;
 }
 
-const ProfilePhoto: React.FC<IProfilePhoto> = ({ navigation }) => {
+const ProfilePhoto: React.FC<IProfilePhoto> = ({ navigation, route }) => {
+  const { photoURL: previousPhoto = '' } = route.params;
+
   const insets = useSafeAreaInsets();
 
-  const handleUploadPhoto = () => {
-    /**
-     * @todo Limit navigation to next screen without profile photo
-     */
-    navigation.navigate(SCREENS.INFO);
+  const [photoURL, setPhotoURL] = React.useState<string>('');
+  const [activity, setActivity] = React.useState<boolean>(false);
+
+  const handleSubmitPhoto = () => {
+    navigation.navigate(SCREENS.INFO, { photoURL: photoURL || previousPhoto });
   };
 
   return (
@@ -33,10 +42,19 @@ const ProfilePhoto: React.FC<IProfilePhoto> = ({ navigation }) => {
             'You are logged in for the first time and can \nupload a profile photo'
           }
         />
-        <ProfileImage />
+        <ProfileImage
+          setActivity={setActivity}
+          photoURL={photoURL || previousPhoto}
+          setPhotoURL={setPhotoURL}
+          activity={activity}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <Button label={'Next'} onPress={handleUploadPhoto} />
+        <Button
+          label={'Next'}
+          onPress={handleSubmitPhoto}
+          disabled={activity}
+        />
       </View>
     </View>
   );

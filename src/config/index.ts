@@ -6,6 +6,9 @@ export enum SCREENS {
   EDIT_PROFILE = 'EditProfile',
   BOTTOM_TABS = 'BottomTabs',
   INFO_STACK = 'InfoStack',
+  DRAWER = 'Drawer',
+  HOME = 'Home',
+  PROFILE = 'Profile',
 }
 
 export const colors = {

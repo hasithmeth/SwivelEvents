@@ -1,19 +1,21 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { RootState } from '../store';
-import Toast from 'react-native-toast-message';
-import { setActivity } from './activitySlice';
 import database from '@react-native-firebase/database';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Toast from 'react-native-toast-message';
+import { RootState } from '../store';
+import { setActivity } from './activitySlice';
 
+interface User {
+  uid: string;
+  email: string | null;
+  photoURL: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  mailingAddress: string | null;
+  phone: string | null;
+}
 interface AuthState {
-  user: {
-    uid: string;
-    email: string | null;
-    photoURL: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    mailingAddress: string | null;
-  } | null;
+  user: User | null;
   isLoading: boolean;
   error: string | null;
   isNewUser?: boolean;
@@ -26,6 +28,15 @@ const initialState: AuthState = {
   isNewUser: false,
 };
 
+interface UpdateUserPayload {
+  email?: string | null;
+  photoURL?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  mailingAddress?: string | null;
+  phone?: string | null;
+}
+
 const serializeUserOnSignUp = (user: FirebaseAuthTypes.User) => ({
   uid: user.uid,
   email: user.email,
@@ -33,6 +44,7 @@ const serializeUserOnSignUp = (user: FirebaseAuthTypes.User) => ({
   firstName: null,
   lastName: null,
   mailingAddress: null,
+  phone: null,
 });
 
 const serializeUserOnSignIn = (
@@ -45,6 +57,7 @@ const serializeUserOnSignIn = (
   firstName: userInfo.firstName,
   lastName: userInfo.lastName,
   mailingAddress: userInfo.mailingAddress,
+  phone: userInfo.phone,
 });
 
 export const signUp = createAsyncThunk(
@@ -110,6 +123,32 @@ export const signIn = createAsyncThunk(
   },
 );
 
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateUserProfile',
+  async (data: UpdateUserPayload, { rejectWithValue }) => {
+    try {
+      const user = auth().currentUser;
+      if (!user) {
+        Toast.show({
+          type: 'error',
+          text1: 'Update Failed',
+          text2: 'User not found',
+        });
+        return rejectWithValue('User not found');
+      }
+      await database().ref(`users/${user.uid}`).update(data);
+      return { uid: user.uid, ...data } as User;
+    } catch (error: any) {
+      Toast.show({
+        type: 'error',
+        text1: 'Update Failed',
+        text2: error.message.split(']')[1].trim(),
+      });
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
 export const signOut = createAsyncThunk(
   'auth/signOut',
   async (_, { rejectWithValue }) => {
@@ -131,6 +170,14 @@ const authSlice = createSlice({
     },
     setNotNewUser(state) {
       state.isNewUser = false;
+    },
+    updateUser(state, action: PayloadAction<UpdateUserPayload>) {
+      if (state.user) {
+        state.user = {
+          ...state.user,
+          ...action.payload,
+        };
+      }
     },
   },
   extraReducers: builder => {
@@ -162,11 +209,29 @@ const authSlice = createSlice({
       })
       .addCase(signOut.fulfilled, state => {
         state.user = null;
+      })
+      .addCase(updateUserProfile.pending, state => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        if (state.isNewUser) {
+          state.isNewUser = false;
+        }
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+        if (state.isNewUser) {
+          state.isNewUser = false;
+        }
       });
   },
 });
 
-export const { resetError, setNotNewUser } = authSlice.actions;
+export const { resetError, setNotNewUser, updateUser } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

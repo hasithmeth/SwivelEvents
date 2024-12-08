@@ -7,11 +7,11 @@ import { colors, SCREENS } from '../config';
 import { useAppSelector } from '../hooks';
 import EditProfile from '../screens/user/EditProfile';
 import { selectAuth } from '../store/slices/authSlice';
-import BottomTabs from './BottomTabs';
+import Drawer from './Drawer';
 import InfoStack from './InfoStack';
 
 export type UserStackParamList = {
-  BottomTabs: undefined;
+  Drawer: undefined;
   EditProfile: undefined;
 };
 
@@ -25,14 +25,14 @@ const UserStack = () => {
   } else {
     return (
       <Stack.Navigator
-        initialRouteName={SCREENS.BOTTOM_TABS}
+        initialRouteName={SCREENS.DRAWER}
         screenOptions={{
           headerShown: false,
           cardStyle: {
             backgroundColor: colors.background,
           },
         }}>
-        <Stack.Screen name={SCREENS.BOTTOM_TABS} component={BottomTabs} />
+        <Stack.Screen name={SCREENS.DRAWER} component={Drawer} />
         <Stack.Screen name={SCREENS.EDIT_PROFILE} component={EditProfile} />
       </Stack.Navigator>
     );

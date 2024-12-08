@@ -12,9 +12,18 @@ import { colors } from '../config';
 import { useAppSelector } from '../hooks';
 import { selectAuth } from '../store/slices/authSlice';
 
-interface IProfileImage {}
+interface IProfileImage {
+  photoURL: string;
+  setPhotoURL: React.Dispatch<React.SetStateAction<string>>;
+  activity: boolean;
+  setActivity: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const ProfileImage: React.FC<IProfileImage> = ({}) => {
+const ProfileImage: React.FC<IProfileImage> = ({
+  photoURL,
+  setPhotoURL,
+  setActivity,
+}) => {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
 
@@ -49,6 +58,7 @@ const ProfileImage: React.FC<IProfileImage> = ({}) => {
       );
 
       setSelectedProfile(response.data.secure_url);
+      setPhotoURL(response.data.secure_url);
     } catch (error: any) {
       console.error('Upload Error:', error.response || error.message);
       Toast.show({
@@ -56,28 +66,26 @@ const ProfileImage: React.FC<IProfileImage> = ({}) => {
         text1: 'Upload Failed',
         text2: 'Failed to upload the image!',
       });
+    } finally {
+      setActivity(false);
     }
   };
 
   const pickImage = async () => {
     try {
-      await ImagePicker.openPicker({
+      const image = await ImagePicker.openPicker({
         height: 400,
         width: 400,
         cropping: true,
         mediaType: 'photo',
         cropperCircleOverlay: true,
-      }).then(image => {
+      });
+
+      if (image) {
+        setActivity(true);
         uploadImage(image.path);
-      });
-    } catch (error) {
-      console.error('Error picking image:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Failed to pick image',
-        text2: 'Try again!',
-      });
-    }
+      }
+    } catch (error) {}
   };
 
   return (
@@ -92,9 +100,9 @@ const ProfileImage: React.FC<IProfileImage> = ({}) => {
             onAnimationComplete={() => setUploadProgress(0)}
             backgroundColor={colors.profilePlaceholder}
           />
-        ) : selectedProfile ? (
+        ) : selectedProfile || photoURL ? (
           <FastImage
-            source={{ uri: selectedProfile }}
+            source={{ uri: selectedProfile || photoURL }}
             style={styles.profileImage}
           />
         ) : (

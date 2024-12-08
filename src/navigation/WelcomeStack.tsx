@@ -4,9 +4,8 @@ import {
 } from '@react-navigation/stack';
 import React from 'react';
 import { colors, SCREENS } from '../config';
-import Login from '../screens/welcome/Login';
 import Signup from '../screens/welcome/Signup';
-import ProfilePhoto from '../screens/welcome/ProfilePhoto';
+import Login from '../screens/welcome/Login';
 
 export type WelcomeStackParamList = {
   Login: undefined;
@@ -25,7 +24,7 @@ const WelcomeStack = () => {
           backgroundColor: colors.background,
         },
       }}>
-      <Stack.Screen name={SCREENS.LOGIN} component={ProfilePhoto} />
+      <Stack.Screen name={SCREENS.LOGIN} component={Login} />
       <Stack.Screen name={SCREENS.SIGNUP} component={Signup} />
     </Stack.Navigator>
   );
