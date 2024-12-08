@@ -14,7 +14,11 @@ const Drawer = createDrawerNavigator<DrawerParamList>();
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator initialRouteName={SCREENS.BOTTOM_TABS}>
+    <Drawer.Navigator
+      initialRouteName={SCREENS.BOTTOM_TABS}
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Drawer.Screen name={SCREENS.BOTTOM_TABS} component={BottomTabs} />
     </Drawer.Navigator>
   );

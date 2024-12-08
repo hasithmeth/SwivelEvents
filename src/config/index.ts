@@ -26,4 +26,5 @@ export const colors = {
   textLabel: '#444749',
   textSubtitle: '#757779',
   profilePlaceholder: '#F1E6E3',
+  headerBorder: '#E1E2E4',
 };

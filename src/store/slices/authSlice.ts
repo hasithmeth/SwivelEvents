@@ -53,7 +53,7 @@ const serializeUserOnSignIn = (
 ) => ({
   uid: user.uid,
   email: user.email,
-  photoURL: user.photoURL,
+  photoURL: userInfo.photoURL,
   firstName: userInfo.firstName,
   lastName: userInfo.lastName,
   mailingAddress: userInfo.mailingAddress,
@@ -79,7 +79,6 @@ export const signUp = createAsyncThunk(
 
       return serializeUserOnSignUp(userCredential.user);
     } catch (error: any) {
-      console.log(error);
       Toast.show({
         type: 'error',
         text1: 'Signup Failed',

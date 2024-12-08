@@ -6,6 +6,7 @@ import arrow_right from './arrow.png';
 import arrow_up from './arrow-up.png';
 import photo_camera from './photo-camera.png';
 import arrow_back from './arrow-back.png';
+import user from './user.png';
 export default {
   email_icon,
   lock_icon,
@@ -15,4 +16,5 @@ export default {
   arrow_up,
   photo_camera,
   arrow_back,
+  user,
 };

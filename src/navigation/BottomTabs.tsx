@@ -1,11 +1,13 @@
 import {
+  BottomTabNavigationOptions,
   BottomTabNavigationProp,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import React from 'react';
+import BottomTabHeader from '../components/navigationComponents/BottomTabHeader';
+import { colors, SCREENS } from '../config';
 import Home from '../screens/user/Home';
 import Profile from '../screens/user/Profile';
-import { SCREENS } from '../config';
 
 export type BottomTabsParamList = {
   Home: undefined;
@@ -14,10 +16,25 @@ export type BottomTabsParamList = {
 
 const Tab = createBottomTabNavigator<BottomTabsParamList>();
 
+const screenOptions: BottomTabNavigationOptions = {
+  header: (props: any) => <BottomTabHeader {...props} />,
+  sceneStyle: {
+    backgroundColor: colors.background,
+  },
+};
+
 const BottomTabs = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name={SCREENS.HOME} component={Home} />
+    <Tab.Navigator
+      initialRouteName={SCREENS.HOME}
+      screenOptions={screenOptions}>
+      <Tab.Screen
+        name={SCREENS.HOME}
+        component={Home}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Tab.Screen name={SCREENS.PROFILE} component={Profile} />
     </Tab.Navigator>
   );
