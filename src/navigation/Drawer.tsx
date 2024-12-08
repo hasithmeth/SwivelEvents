@@ -18,6 +18,7 @@ const DrawerNavigator = () => {
       initialRouteName={SCREENS.BOTTOM_TABS}
       screenOptions={{
         headerShown: false,
+        drawerType: 'front',
       }}>
       <Drawer.Screen name={SCREENS.BOTTOM_TABS} component={BottomTabs} />
     </Drawer.Navigator>

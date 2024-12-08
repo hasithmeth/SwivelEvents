@@ -12,9 +12,7 @@ import { selectAuth } from '../../store/slices/authSlice';
 
 interface IBottomTabHeader extends BottomTabHeaderProps {}
 
-const BottomTabHeader: React.FC<IBottomTabHeader> = props => {
-  const { route } = props;
-
+const BottomTabHeader: React.FC<IBottomTabHeader> = ({ route }) => {
   const { user } = useAppSelector(selectAuth);
 
   const navigation = useNavigation();

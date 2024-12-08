@@ -1,4 +1,5 @@
 import {
+  BottomTabBarProps,
   BottomTabNavigationOptions,
   BottomTabNavigationProp,
   createBottomTabNavigator,
@@ -8,6 +9,7 @@ import BottomTabHeader from '../components/navigationComponents/BottomTabHeader'
 import { colors, SCREENS } from '../config';
 import Home from '../screens/user/Home';
 import Profile from '../screens/user/Profile';
+import TabBar from '../components/navigationComponents/TabBar';
 
 export type BottomTabsParamList = {
   Home: undefined;
@@ -23,10 +25,13 @@ const screenOptions: BottomTabNavigationOptions = {
   },
 };
 
+const CustomTabBar = (props: BottomTabBarProps) => <TabBar {...props} />;
+
 const BottomTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName={SCREENS.HOME}
+      tabBar={CustomTabBar}
       screenOptions={screenOptions}>
       <Tab.Screen
         name={SCREENS.HOME}
