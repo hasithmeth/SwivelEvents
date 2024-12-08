@@ -1,5 +1,6 @@
 import {
   createStackNavigator,
+  StackNavigationOptions,
   StackNavigationProp,
 } from '@react-navigation/stack';
 import React from 'react';
@@ -9,13 +10,21 @@ import EditProfile from '../screens/user/EditProfile';
 import { selectAuth } from '../store/slices/authSlice';
 import Drawer from './Drawer';
 import InfoStack from './InfoStack';
+import StackHeader from '../components/navigationComponents/StackHeader';
 
 export type UserStackParamList = {
   Drawer: undefined;
-  EditProfile: undefined;
+  'Edit Profile': undefined;
 };
 
 const Stack = createStackNavigator<UserStackParamList>();
+
+const screenOptions: StackNavigationOptions = {
+  cardStyle: {
+    backgroundColor: colors.background,
+  },
+  header: (props: any) => <StackHeader {...props} />,
+};
 
 const UserStack = () => {
   const auth = useAppSelector(selectAuth);
@@ -26,13 +35,14 @@ const UserStack = () => {
     return (
       <Stack.Navigator
         initialRouteName={SCREENS.DRAWER}
-        screenOptions={{
-          headerShown: false,
-          cardStyle: {
-            backgroundColor: colors.background,
-          },
-        }}>
-        <Stack.Screen name={SCREENS.DRAWER} component={Drawer} />
+        screenOptions={screenOptions}>
+        <Stack.Screen
+          name={SCREENS.DRAWER}
+          component={Drawer}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen name={SCREENS.EDIT_PROFILE} component={EditProfile} />
       </Stack.Navigator>
     );

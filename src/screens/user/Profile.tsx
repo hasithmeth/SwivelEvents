@@ -5,14 +5,21 @@ import icons from '../../assets/icons';
 import Button from '../../components/Button';
 import InfoPanel from '../../components/InfoPanel';
 import ProfileImage from '../../components/ProfileImage';
-import { colors } from '../../config';
+import { colors, SCREENS } from '../../config';
 import { useAppSelector } from '../../hooks';
 import { selectAuth } from '../../store/slices/authSlice';
+import { UserStackProps } from '../../navigation/UserStack';
 
-interface IProfile {}
+interface IProfile {
+  navigation: UserStackProps;
+}
 
-const Profile: React.FC<IProfile> = () => {
+const Profile: React.FC<IProfile> = ({ navigation }) => {
   const { user } = useAppSelector(selectAuth);
+
+  const handleEditPress = () => {
+    navigation.navigate(SCREENS.EDIT_PROFILE);
+  };
 
   const values = {
     firstName: user?.firstName || '',
@@ -40,13 +47,7 @@ const Profile: React.FC<IProfile> = () => {
         <InfoPanel values={values} />
       </ScrollView>
       <View style={styles.buttonContainer}>
-        <Button
-          label={'Edit'}
-          onPress={function (): void {
-            throw new Error('Function not implemented.');
-          }}
-          noDirection
-        />
+        <Button label={'Edit'} onPress={handleEditPress} noDirection />
       </View>
     </>
   );

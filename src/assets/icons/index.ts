@@ -9,6 +9,7 @@ import arrow_back from './arrow-back.png';
 import user from './user.png';
 import home from './home.png';
 import more from './more.png';
+import profile_back from './profile-back.png';
 export default {
   email_icon,
   lock_icon,
@@ -21,4 +22,5 @@ export default {
   user,
   home,
   more,
+  profile_back,
 };

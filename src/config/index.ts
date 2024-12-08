@@ -3,7 +3,7 @@ export enum SCREENS {
   SIGNUP = 'Signup',
   PROFILE_PHOTO = 'ProfilePhoto',
   INFO = 'Info',
-  EDIT_PROFILE = 'EditProfile',
+  EDIT_PROFILE = 'Edit Profile',
   BOTTOM_TABS = 'BottomTabs',
   INFO_STACK = 'InfoStack',
   DRAWER = 'Drawer',
