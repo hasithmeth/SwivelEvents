@@ -14,15 +14,19 @@ import { selectAuth } from '../store/slices/authSlice';
 
 interface IProfileImage {
   photoURL: string;
-  setPhotoURL: React.Dispatch<React.SetStateAction<string>>;
-  activity: boolean;
-  setActivity: React.Dispatch<React.SetStateAction<boolean>>;
+  setPhotoURL?: React.Dispatch<React.SetStateAction<string>>;
+  activity?: boolean;
+  setActivity?: React.Dispatch<React.SetStateAction<boolean>>;
+  readonly?: boolean;
+  customTopMargin?: number;
 }
 
 const ProfileImage: React.FC<IProfileImage> = ({
   photoURL,
   setPhotoURL,
   setActivity,
+  readonly,
+  customTopMargin = 32,
 }) => {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -58,7 +62,7 @@ const ProfileImage: React.FC<IProfileImage> = ({
       );
 
       setSelectedProfile(response.data.secure_url);
-      setPhotoURL(response.data.secure_url);
+      setPhotoURL?.(response.data.secure_url);
     } catch (error: any) {
       console.error('Upload Error:', error.response || error.message);
       Toast.show({
@@ -67,7 +71,7 @@ const ProfileImage: React.FC<IProfileImage> = ({
         text2: 'Failed to upload the image!',
       });
     } finally {
-      setActivity(false);
+      setActivity?.(false);
     }
   };
 
@@ -82,15 +86,21 @@ const ProfileImage: React.FC<IProfileImage> = ({
       });
 
       if (image) {
-        setActivity(true);
+        setActivity?.(true);
         uploadImage(image.path);
       }
     } catch (error) {}
   };
 
+  const handleOnPress = () => {
+    if (!readonly) {
+      pickImage();
+    }
+  };
+
   return (
-    <TouchableWithoutFeedback onPress={pickImage}>
-      <View style={styles.container}>
+    <TouchableWithoutFeedback onPress={handleOnPress}>
+      <View style={[styles.container, { marginTop: customTopMargin }]}>
         {uploadProgress > 1 ? (
           <AnimatedCircularProgress
             size={80}
@@ -121,7 +131,6 @@ const styles = StyleSheet.create({
     width: 116,
     backgroundColor: colors.profilePlaceholder,
     borderRadius: 100,
-    marginTop: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },

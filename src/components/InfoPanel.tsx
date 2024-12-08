@@ -3,7 +3,6 @@ import { TextInput as RNTextInput, StyleSheet, View } from 'react-native';
 import TextInput from './TextInput';
 
 interface IInfoPanel {
-  dividerHeight: number;
   values: {
     firstName: string;
     lastName: string;
@@ -11,10 +10,11 @@ interface IInfoPanel {
     phone: string;
     mailingAddress: string;
   };
-  handleChange: (field: string) => (text: string) => void;
-  handleBlur: (field: string) => void;
-  errors: { [key: string]: string | undefined };
-  touched: { [key: string]: boolean | undefined };
+  handleChange?: (field: string) => (text: string) => void;
+  handleBlur?: (field: string) => void;
+  errors?: { [key: string]: string | undefined };
+  touched?: { [key: string]: boolean | undefined };
+  dividerHeight?: number;
 }
 
 const InfoPanel: React.FC<IInfoPanel> = ({
@@ -62,9 +62,9 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onSubmitEditing={handleFirstNameSubmit}
         returnKeyType={'next'}
         value={values.firstName}
-        onChangeText={text => handleChange('firstName')(text)}
-        onChangeFocus={() => handleBlur('firstName')}
-        error={touched.firstName && errors.firstName}
+        onChangeText={text => handleChange?.('firstName')(text)}
+        onChangeFocus={() => handleBlur?.('firstName')}
+        error={touched?.firstName && errors?.firstName}
       />
       <View style={styles.divider} />
       <TextInput
@@ -76,9 +76,9 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onSubmitEditing={handleLastNameSubmit}
         returnKeyType={'next'}
         value={values.lastName}
-        onChangeText={text => handleChange('lastName')(text)}
-        onChangeFocus={() => handleBlur('lastName')}
-        error={touched.lastName && errors.lastName}
+        onChangeText={text => handleChange?.('lastName')(text)}
+        onChangeFocus={() => handleBlur?.('lastName')}
+        error={touched?.lastName && errors?.lastName}
       />
       <View style={styles.divider} />
       <TextInput
@@ -90,9 +90,9 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onSubmitEditing={handleEmailSubmit}
         returnKeyType={'next'}
         value={values.email}
-        onChangeText={text => handleChange('email')(text)}
-        onChangeFocus={() => handleBlur('email')}
-        error={touched.email && errors.email}
+        onChangeText={text => handleChange?.('email')(text)}
+        onChangeFocus={() => handleBlur?.('email')}
+        error={touched?.email && errors?.email}
         readOnly
       />
       <View style={styles.divider} />
@@ -105,9 +105,9 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onSubmitEditing={handlePhoneSubmit}
         returnKeyType={'next'}
         value={values.phone}
-        onChangeText={text => handleChange('phone')(text)}
-        onChangeFocus={() => handleBlur('phone')}
-        error={touched.phone && errors.phone}
+        onChangeText={text => handleChange?.('phone')(text)}
+        onChangeFocus={() => handleBlur?.('phone')}
+        error={touched?.phone && errors?.phone}
         fontSize={16}
       />
       <View style={styles.divider} />
@@ -119,9 +119,9 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         ref={txtMailingAddressRef}
         returnKeyType={'go'}
         value={values.mailingAddress}
-        onChangeText={text => handleChange('mailingAddress')(text)}
-        onChangeFocus={() => handleBlur('mailingAddress')}
-        error={touched.mailingAddress && errors.mailingAddress}
+        onChangeText={text => handleChange?.('mailingAddress')(text)}
+        onChangeFocus={() => handleBlur?.('mailingAddress')}
+        error={touched?.mailingAddress && errors?.mailingAddress}
         fontSize={16}
       />
       <View style={styles.divider} />

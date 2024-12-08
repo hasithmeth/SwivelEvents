@@ -17,6 +17,7 @@ interface IButton {
   disabled?: boolean;
   mode?: 'forward' | 'backward';
   activity?: boolean;
+  noDirection?: boolean;
 }
 
 const Button: React.FC<IButton> = ({
@@ -25,6 +26,7 @@ const Button: React.FC<IButton> = ({
   disabled,
   mode = 'forward',
   activity = false,
+  noDirection = false,
 }) => {
   return (
     <TouchableWithoutFeedback
@@ -44,7 +46,9 @@ const Button: React.FC<IButton> = ({
           ) : (
             <>
               <Text style={styles.label}>{label}</Text>
-              <FastImage source={icons.arrow_right} style={styles.icon} />
+              {!noDirection ? (
+                <FastImage source={icons.arrow_right} style={styles.icon} />
+              ) : null}
             </>
           )}
         </View>
@@ -55,10 +59,12 @@ const Button: React.FC<IButton> = ({
             styles.backContainer,
             disabled ? styles.disabledContainer : null,
           ]}>
-          <FastImage
-            source={icons.arrow_back}
-            style={[styles.icon, styles.iconBack]}
-          />
+          {!noDirection ? (
+            <FastImage
+              source={icons.arrow_back}
+              style={[styles.icon, styles.iconBack]}
+            />
+          ) : null}
           <Text style={[styles.label, styles.labelBack]}>{label}</Text>
         </View>
       )}
