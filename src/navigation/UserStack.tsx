@@ -4,12 +4,10 @@ import {
 } from '@react-navigation/stack';
 import React from 'react';
 import { colors, SCREENS } from '../config';
-import EditProfile from '../screens/user/EditProfile';
-import Info from '../screens/welcome/Info';
-import ProfilePhoto from '../screens/welcome/ProfilePhoto';
-import BottomTabs from './BottomTabs';
 import { useAppSelector } from '../hooks';
+import EditProfile from '../screens/user/EditProfile';
 import { selectAuth } from '../store/slices/authSlice';
+import BottomTabs from './BottomTabs';
 import InfoStack from './InfoStack';
 
 export type UserStackParamList = {

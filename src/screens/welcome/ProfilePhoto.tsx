@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import icons from '../../assets/icons';
 import Button from '../../components/Button';
+import ProfileImage from '../../components/ProfileImage';
 import Welcome from '../../components/Welcome';
-import { colors, SCREENS } from '../../config';
-import { WelcomeStackProps } from '../../navigation/WelcomeStack';
+import { SCREENS } from '../../config';
+import { InfoStackProps } from '../../navigation/InfoStack';
 
 interface IProfilePhoto {
-  navigation: WelcomeStackProps;
+  navigation: InfoStackProps;
 }
 
 const ProfilePhoto: React.FC<IProfilePhoto> = ({ navigation }) => {
@@ -34,9 +33,7 @@ const ProfilePhoto: React.FC<IProfilePhoto> = ({ navigation }) => {
             'You are logged in for the first time and can \nupload a profile photo'
           }
         />
-        <View style={styles.imageContainer}>
-          <FastImage source={icons.photo_camera} style={styles.icon} />
-        </View>
+        <ProfileImage />
       </View>
       <View style={styles.buttonContainer}>
         <Button label={'Next'} onPress={handleUploadPhoto} />
@@ -51,19 +48,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
-  },
-  imageContainer: {
-    height: 116,
-    width: 116,
-    backgroundColor: colors.profilePlaceholder,
-    borderRadius: 100,
-    marginTop: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  icon: {
-    height: 24,
-    width: 24,
   },
   topContainer: {
     flex: 1,
