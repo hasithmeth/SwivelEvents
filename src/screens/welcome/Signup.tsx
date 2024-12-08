@@ -17,6 +17,9 @@ import TextInput from '../../components/TextInput';
 import Welcome from '../../components/Welcome';
 import { SCREENS } from '../../config';
 import { WelcomeStackProps } from '../../navigation/WelcomeStack';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { selectActivity, setActivity } from '../../store/slices/activitySlice';
+import { signUp } from '../../store/slices/authSlice';
 
 const validationSchema = yup.object().shape({
   email: yup.string().email().required(),
@@ -36,6 +39,9 @@ const Signup: React.FC<ISignup> = ({ navigation }) => {
   const txtPasswordRef = useRef<RNTextInput>(null);
   const txtConfirmPasswordRef = useRef<RNTextInput>(null);
 
+  const dispatch = useAppDispatch();
+  const activity = useAppSelector(selectActivity);
+
   const insets = useSafeAreaInsets();
 
   const handleEmailSubmit = () => {
@@ -46,7 +52,8 @@ const Signup: React.FC<ISignup> = ({ navigation }) => {
   };
 
   const handleSignup = (values: { email: string; password: string }) => {
-    console.log(values);
+    dispatch(setActivity(true));
+    dispatch(signUp(values));
   };
 
   const handleLoginPress = () => {
@@ -131,9 +138,14 @@ const Signup: React.FC<ISignup> = ({ navigation }) => {
                 label={'Sign up'}
                 onPress={handleSubmit}
                 disabled={!isValid}
+                activity={activity}
               />
               <View style={styles.divider} />
-              <Button label={'Login'} onPress={handleLoginPress} />
+              <Button
+                label={'Login'}
+                onPress={handleLoginPress}
+                disabled={activity}
+              />
             </View>
           </KeyboardAvoidingView>
         </TouchableWithoutFeedback>

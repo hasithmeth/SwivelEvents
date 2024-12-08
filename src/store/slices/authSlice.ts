@@ -3,9 +3,17 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { RootState } from '../store';
 import Toast from 'react-native-toast-message';
 import { setActivity } from './activitySlice';
+import database from '@react-native-firebase/database';
 
 interface AuthState {
-  user: FirebaseAuthTypes.User | null;
+  user: {
+    uid: string;
+    email: string | null;
+    photoURL: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    mailingAddress: string | null;
+  } | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -16,20 +24,55 @@ const initialState: AuthState = {
   error: null,
 };
 
+const serializeUserOnSignUp = (user: FirebaseAuthTypes.User) => ({
+  uid: user.uid,
+  email: user.email,
+  photoURL: user.photoURL,
+  firstName: null,
+  lastName: null,
+  mailingAddress: null,
+});
+
+const serializeUserOnSignIn = (
+  user: FirebaseAuthTypes.User,
+  userInfo: any,
+) => ({
+  uid: user.uid,
+  email: user.email,
+  photoURL: user.photoURL,
+  firstName: userInfo.firstName,
+  lastName: userInfo.lastName,
+  mailingAddress: userInfo.mailingAddress,
+});
+
 export const signUp = createAsyncThunk(
   'auth/signUp',
   async (
     { email, password }: { email: string; password: string },
-    { rejectWithValue },
+    { rejectWithValue, dispatch },
   ) => {
     try {
       const userCredential = await auth().createUserWithEmailAndPassword(
         email,
         password,
       );
-      return userCredential.user; // Return the Firebase User object
+
+      await database().ref(`users/${userCredential.user.uid}`).set({
+        email,
+        createdAt: new Date().toISOString(),
+      });
+
+      return serializeUserOnSignUp(userCredential.user);
     } catch (error: any) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Signup Failed',
+        text2: 'Please check email and password',
+      });
       return rejectWithValue(error.message);
+    } finally {
+      dispatch(setActivity(false));
     }
   },
 );
@@ -45,7 +88,13 @@ export const signIn = createAsyncThunk(
         email,
         password,
       );
-      return userCredential.user; // Return the Firebase User object
+
+      const snapshot = await database()
+        .ref(`users/${userCredential.user.uid}`)
+        .once('value');
+      const userInfo = snapshot.val();
+
+      return serializeUserOnSignIn(userCredential.user, userInfo);
     } catch (error: any) {
       Toast.show({
         type: 'error',
@@ -87,7 +136,7 @@ const authSlice = createSlice({
       })
       .addCase(signUp.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload; // Set the Firebase User object
+        state.user = action.payload;
       })
       .addCase(signUp.rejected, (state, action) => {
         state.isLoading = false;
@@ -99,7 +148,7 @@ const authSlice = createSlice({
       })
       .addCase(signIn.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload; // Set the Firebase User object
+        state.user = action.payload;
       })
       .addCase(signIn.rejected, (state, action) => {
         state.isLoading = false;

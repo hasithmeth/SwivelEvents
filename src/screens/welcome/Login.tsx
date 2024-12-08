@@ -16,9 +16,9 @@ import Button from '../../components/Button';
 import RestorePassword from '../../components/RestorePassword';
 import TextInput from '../../components/TextInput';
 import Welcome from '../../components/Welcome';
-import { WelcomeStackProps } from '../../navigation/WelcomeStack';
 import { SCREENS } from '../../config';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { WelcomeStackProps } from '../../navigation/WelcomeStack';
 import { selectActivity, setActivity } from '../../store/slices/activitySlice';
 import { signIn } from '../../store/slices/authSlice';
 
@@ -45,7 +45,6 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
   };
 
   const handleLogin = (values: { email: string; password: string }) => {
-    console.log(values);
     dispatch(setActivity(true));
     dispatch(signIn(values));
     //navigation.replace(SCREENS.PROFILE_PHOTO);
@@ -125,7 +124,7 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
               <Button
                 label={'Sign Up'}
                 onPress={handleSignupPress}
-                disabled={!activity}
+                disabled={activity}
               />
             </View>
           </KeyboardAvoidingView>
