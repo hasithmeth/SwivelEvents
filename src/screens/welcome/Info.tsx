@@ -14,6 +14,8 @@ import Button from '../../components/Button';
 import InfoTitle from '../../components/InfoTitle';
 import TextInput from '../../components/TextInput';
 import { WelcomeStackProps } from '../../navigation/WelcomeStack';
+import { useAppDispatch } from '../../hooks';
+import { setNotNewUser } from '../../store/slices/authSlice';
 
 const validationSchema = yup.object().shape({
   firstName: yup.string(),
@@ -29,6 +31,8 @@ interface IInfo {
 
 const Info: React.FC<IInfo> = ({ navigation }) => {
   const insets = useSafeAreaInsets();
+
+  const dispatch = useAppDispatch();
 
   const txtLastNameRef = useRef<RNTextInput>(null);
   const txtEmailRef = useRef<RNTextInput>(null);
@@ -59,6 +63,7 @@ const Info: React.FC<IInfo> = ({ navigation }) => {
     mailingAddress: string;
   }) => {
     console.log(values);
+    dispatch(setNotNewUser());
   };
 
   const handleGoBack = () => {

@@ -16,12 +16,14 @@ interface AuthState {
   } | null;
   isLoading: boolean;
   error: string | null;
+  isNewUser?: boolean;
 }
 
 const initialState: AuthState = {
   user: null,
   isLoading: false,
   error: null,
+  isNewUser: false,
 };
 
 const serializeUserOnSignUp = (user: FirebaseAuthTypes.User) => ({
@@ -68,7 +70,7 @@ export const signUp = createAsyncThunk(
       Toast.show({
         type: 'error',
         text1: 'Signup Failed',
-        text2: 'Please check email and password',
+        text2: error.message.split(']')[1].trim(),
       });
       return rejectWithValue(error.message);
     } finally {
@@ -99,7 +101,7 @@ export const signIn = createAsyncThunk(
       Toast.show({
         type: 'error',
         text1: 'Login Failed',
-        text2: 'Please check email and password',
+        text2: error.message.split(']')[1].trim(),
       });
       return rejectWithValue(error.message);
     } finally {
@@ -127,6 +129,9 @@ const authSlice = createSlice({
     resetError(state) {
       state.error = null;
     },
+    setNotNewUser(state) {
+      state.isNewUser = false;
+    },
   },
   extraReducers: builder => {
     builder
@@ -136,6 +141,7 @@ const authSlice = createSlice({
       })
       .addCase(signUp.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isNewUser = true;
         state.user = action.payload;
       })
       .addCase(signUp.rejected, (state, action) => {
@@ -160,7 +166,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetError } = authSlice.actions;
+export const { resetError, setNotNewUser } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

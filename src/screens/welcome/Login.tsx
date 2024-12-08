@@ -19,12 +19,11 @@ import Welcome from '../../components/Welcome';
 import { SCREENS } from '../../config';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { WelcomeStackProps } from '../../navigation/WelcomeStack';
-import { selectActivity, setActivity } from '../../store/slices/activitySlice';
-import { signIn } from '../../store/slices/authSlice';
+import { selectAuth, signIn } from '../../store/slices/authSlice';
 
 const validationSchema = yup.object().shape({
   email: yup.string().email().required(),
-  password: yup.string().min(8).required(),
+  password: yup.string().min(6).required(),
 });
 
 interface ILogin {
@@ -36,7 +35,8 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
   const txtPasswordRef = useRef<RNTextInput>(null);
 
   const dispatch = useAppDispatch();
-  const activity = useAppSelector(selectActivity);
+  // const activity = useAppSelector(selectActivity);
+  const { isLoading } = useAppSelector(selectAuth);
 
   const insets = useSafeAreaInsets();
 
@@ -45,9 +45,8 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
   };
 
   const handleLogin = (values: { email: string; password: string }) => {
-    dispatch(setActivity(true));
+    // dispatch(setActivity(true));
     dispatch(signIn(values));
-    //navigation.replace(SCREENS.PROFILE_PHOTO);
   };
 
   const handleSignupPress = () => {
@@ -118,13 +117,13 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
                 label={'Login'}
                 onPress={handleSubmit}
                 disabled={!isValid}
-                activity={activity}
+                activity={isLoading}
               />
               <View style={styles.divider} />
               <Button
                 label={'Sign Up'}
                 onPress={handleSignupPress}
-                disabled={activity}
+                disabled={isLoading}
               />
             </View>
           </KeyboardAvoidingView>
