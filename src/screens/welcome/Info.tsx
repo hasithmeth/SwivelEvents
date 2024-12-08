@@ -1,10 +1,9 @@
 import { RouteProp } from '@react-navigation/native';
 import { Formik } from 'formik';
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
-  TextInput as RNTextInput,
   ScrollView,
   StyleSheet,
   View,
@@ -12,8 +11,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import Button from '../../components/Button';
+import InfoPanel from '../../components/InfoPanel';
 import InfoTitle from '../../components/InfoTitle';
-import TextInput from '../../components/TextInput';
 import { SCREENS } from '../../config';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { InfoStackParamList, InfoStackProps } from '../../navigation/InfoStack';
@@ -41,27 +40,6 @@ const Info: React.FC<IInfo> = ({ navigation, route }) => {
 
   const dispatch = useAppDispatch();
   const auth = useAppSelector(selectAuth);
-
-  const txtLastNameRef = useRef<RNTextInput>(null);
-  const txtEmailRef = useRef<RNTextInput>(null);
-  const txtPhoneRef = useRef<RNTextInput>(null);
-  const txtMailingAddressRef = useRef<RNTextInput>(null);
-
-  const handleEmailSubmit = () => {
-    txtPhoneRef.current?.focus();
-  };
-
-  const handlePhoneSubmit = () => {
-    txtMailingAddressRef.current?.focus();
-  };
-
-  const handleLastNameSubmit = () => {
-    txtEmailRef.current?.focus();
-  };
-
-  const handleFirstNameSubmit = () => {
-    txtLastNameRef.current?.focus();
-  };
 
   const handleSubmitInfo = (values: {
     firstName: string;
@@ -104,76 +82,15 @@ const Info: React.FC<IInfo> = ({ navigation, route }) => {
             style={[styles.container, { paddingTop: insets.top }]}>
             <ScrollView contentContainerStyle={styles.contentContainer}>
               <InfoTitle />
-              <TextInput
-                label={'First Name'}
-                autoCorrect={false}
-                autoCapitalize={'words'}
-                keyboardType={'default'}
-                onSubmitEditing={handleFirstNameSubmit}
-                returnKeyType={'next'}
-                value={values.firstName}
-                onChangeText={handleChange('firstName')}
-                onChangeFocus={handleBlur('firstName')}
-                error={touched.firstName && errors.firstName}
+              <InfoPanel
+                dividerHeight={24}
+                values={values}
+                //@ts-expect-error
+                handleChange={handleChange}
+                handleBlur={handleBlur}
+                errors={errors}
+                touched={touched}
               />
-              <View style={styles.divider} />
-              <TextInput
-                label={'Last Name'}
-                autoCorrect={false}
-                autoCapitalize={'words'}
-                keyboardType={'default'}
-                ref={txtLastNameRef}
-                onSubmitEditing={handleLastNameSubmit}
-                returnKeyType={'next'}
-                value={values.lastName}
-                onChangeText={handleChange('lastName')}
-                onChangeFocus={handleBlur('lastName')}
-                error={touched.lastName && errors.lastName}
-              />
-              <View style={styles.divider} />
-              <TextInput
-                label={'Email'}
-                autoCorrect={false}
-                autoCapitalize={'words'}
-                keyboardType={'default'}
-                ref={txtEmailRef}
-                onSubmitEditing={handleEmailSubmit}
-                returnKeyType={'next'}
-                value={values.email}
-                onChangeText={handleChange('email')}
-                onChangeFocus={handleBlur('email')}
-                error={touched.email && errors.email}
-              />
-              <View style={styles.divider} />
-              <TextInput
-                label={'Phone number'}
-                autoCorrect={false}
-                autoCapitalize={'words'}
-                keyboardType={'phone-pad'}
-                ref={txtPhoneRef}
-                onSubmitEditing={handlePhoneSubmit}
-                returnKeyType={'next'}
-                value={values.phone}
-                onChangeText={handleChange('phone')}
-                onChangeFocus={handleBlur('phone')}
-                error={touched.phone && errors.phone}
-                fontSize={16}
-              />
-              <View style={styles.divider} />
-              <TextInput
-                label={'Mailing address'}
-                autoCorrect={false}
-                autoCapitalize={'words'}
-                keyboardType={'default'}
-                ref={txtMailingAddressRef}
-                returnKeyType={'go'}
-                value={values.mailingAddress}
-                onChangeText={handleChange('mailingAddress')}
-                onChangeFocus={handleBlur('mailingAddress')}
-                error={touched.mailingAddress && errors.mailingAddress}
-                fontSize={16}
-              />
-              <View style={styles.divider} />
             </ScrollView>
           </KeyboardAvoidingView>
           <View

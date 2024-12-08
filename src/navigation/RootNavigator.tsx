@@ -10,7 +10,7 @@ const RootNavigator = () => {
   const { user } = useAppSelector(selectAuth);
 
   useEffect(() => {
-    changeNavigationBarColor('transparent', false);
+    changeNavigationBarColor('transparent');
   }, []);
 
   return (
