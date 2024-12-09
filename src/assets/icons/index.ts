@@ -12,6 +12,7 @@ import more from './more.png';
 import profile_back from './profile-back.png';
 import logout from './logout.png';
 import photo_camera_white from './photo-camera-white.png';
+import chat from './chat.png';
 export default {
   email_icon,
   lock_icon,
@@ -27,4 +28,5 @@ export default {
   profile_back,
   logout,
   photo_camera_white,
+  chat,
 };

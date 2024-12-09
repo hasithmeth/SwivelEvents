@@ -30,3 +30,24 @@ export const colors = {
   bottomTabsElements: '#8F9193',
   failedText: '#DB2424',
 };
+
+export const staticOrganizers = [
+  {
+    id: '1',
+    name: 'Jerry Seinfeld',
+    email: 'jerry@hollywood.com',
+    image: 'https://i.pravatar.cc/200?img=6',
+  },
+  {
+    id: '2',
+    name: 'Thomas Cat',
+    email: 'tom@tomcat.com',
+    image: 'https://i.pravatar.cc/200?img=11',
+  },
+  {
+    id: '3',
+    name: 'Johnny Bravo',
+    email: 'johnny@gmail.com',
+    image: 'https://i.pravatar.cc/200?img=54',
+  },
+];

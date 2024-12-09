@@ -7,8 +7,8 @@ import InfoPanel from '../../components/InfoPanel';
 import ProfileImage from '../../components/ProfileImage';
 import { colors, SCREENS } from '../../config';
 import { useAppSelector } from '../../hooks';
-import { selectAuth } from '../../store/slices/authSlice';
 import { UserStackProps } from '../../navigation/UserStack';
+import { selectAuth } from '../../store/slices/authSlice';
 
 interface IProfile {
   navigation: UserStackProps;
