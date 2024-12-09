@@ -3,7 +3,7 @@ import {
   StackNavigationOptions,
   StackNavigationProp,
 } from '@react-navigation/stack';
-import React from 'react';
+import React, { useEffect } from 'react';
 import StackHeader from '../components/navigationComponents/StackHeader';
 import { colors, SCREENS } from '../config';
 import { useAppSelector } from '../hooks';
@@ -14,6 +14,7 @@ import Posts from '../screens/user/Posts';
 import { selectAuth } from '../store/slices/authSlice';
 import Drawer from './Drawer';
 import InfoStack from './InfoStack';
+import FirebaseMessagingService from '../helpers/FirebaseMessagingService';
 
 export type UserStackParamList = {
   Drawer: undefined;
@@ -33,6 +34,10 @@ const screenOptions: StackNavigationOptions = {
 };
 
 const UserStack = () => {
+  useEffect(() => {
+    FirebaseMessagingService.initialize();
+  }, []);
+
   const auth = useAppSelector(selectAuth);
 
   if (auth.isNewUser) {
