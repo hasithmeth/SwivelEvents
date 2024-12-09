@@ -1,15 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import TopSlider from '../../components/homeComponents/TopSlider';
 import Title from '../../components/homeComponents/Title';
 import Organizers from '../../components/homeComponents/Organizers';
-import { colors } from '../../config';
+import { colors, SCREENS } from '../../config';
 import Photos from '../../components/homeComponents/Photos';
 import { FONT } from '../../assets/fonts';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getPosts, selectPosts } from '../../store/slices/postsSlice';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { UserStackProps } from '../../navigation/UserStack';
 
-interface IHome {}
+interface IHome {
+  navigation: UserStackProps;
+}
 
-const Home: React.FC<IHome> = () => {
+const Home: React.FC<IHome> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
+
+  const posts = useAppSelector(selectPosts);
+
+  useEffect(() => {
+    dispatch(getPosts());
+  }, [dispatch]);
+
+  const handlePostsPress = () => {
+    navigation.navigate(SCREENS.POSTS);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -19,10 +37,12 @@ const Home: React.FC<IHome> = () => {
         <View style={styles.divider} />
         <Photos />
         <View style={styles.divider} />
-        <View style={styles.postsContainer}>
-          <Text style={styles.countText}>{`16`}</Text>
-          <Text style={styles.labelText}>{'Posts'}</Text>
-        </View>
+        <TouchableWithoutFeedback onPress={handlePostsPress}>
+          <View style={styles.postsContainer}>
+            <Text style={styles.countText}>{`${posts.length}`}</Text>
+            <Text style={styles.labelText}>{'Posts'}</Text>
+          </View>
+        </TouchableWithoutFeedback>
         <View style={styles.divider} />
         <View style={styles.bottomSpacer} />
       </ScrollView>

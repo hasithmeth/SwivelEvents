@@ -9,6 +9,9 @@ export enum SCREENS {
   DRAWER = 'Drawer',
   HOME = 'Home',
   PROFILE = 'Profile',
+  ALL_PHOTOS = 'All Photos',
+  POSTS = 'Posts',
+  COMMENTS = 'Comments',
 }
 
 export const colors = {
