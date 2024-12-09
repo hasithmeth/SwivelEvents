@@ -28,6 +28,10 @@ const Home: React.FC<IHome> = ({ navigation }) => {
     navigation.navigate(SCREENS.POSTS);
   };
 
+  const handleAllPhotosPress = () => {
+    navigation.navigate(SCREENS.ALL_PHOTOS);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -35,7 +39,7 @@ const Home: React.FC<IHome> = ({ navigation }) => {
         <Title />
         <Organizers />
         <View style={styles.divider} />
-        <Photos />
+        <Photos onAllPhotosPress={handleAllPhotosPress} />
         <View style={styles.divider} />
         <TouchableWithoutFeedback onPress={handlePostsPress}>
           <View style={styles.postsContainer}>

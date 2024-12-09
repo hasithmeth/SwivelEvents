@@ -17,9 +17,11 @@ import {
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import PhotoCard from './PhotoCard';
 
-interface IPhotos {}
+interface IPhotos {
+  onAllPhotosPress: () => void;
+}
 
-const Photos: React.FC<IPhotos> = () => {
+const Photos: React.FC<IPhotos> = ({ onAllPhotosPress }) => {
   const dispatch = useAppDispatch();
   const images = useAppSelector(selectBottomImages);
 
@@ -31,7 +33,7 @@ const Photos: React.FC<IPhotos> = () => {
     <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>{'Photos'}</Text>
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={onAllPhotosPress}>
           <View style={styles.buttonComponent}>
             <Text style={styles.buttonText}>{'All Photos'}</Text>
             <FastImage source={icons.arrow_light} style={styles.icon} />
