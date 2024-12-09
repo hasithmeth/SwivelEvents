@@ -28,4 +28,5 @@ export const colors = {
   profilePlaceholder: '#F1E6E3',
   headerBorder: '#E1E2E4',
   bottomTabsElements: '#8F9193',
+  failedText: '#DB2424',
 };

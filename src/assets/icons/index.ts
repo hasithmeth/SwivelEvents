@@ -10,6 +10,7 @@ import user from './user.png';
 import home from './home.png';
 import more from './more.png';
 import profile_back from './profile-back.png';
+import logout from './logout.png';
 export default {
   email_icon,
   lock_icon,
@@ -23,4 +24,5 @@ export default {
   home,
   more,
   profile_back,
+  logout,
 };
