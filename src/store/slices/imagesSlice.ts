@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import Toast from 'react-native-toast-message';
+import axios from 'axios';
 import { Photo } from '../../@types/photo';
 import { RootState } from '../store';
 
@@ -17,35 +17,32 @@ const initialState: imageState = {
   bottomImages: [],
 };
 
-export const getTopImages = createAsyncThunk('images/getImages', async () => {
-  try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/photos');
-    const data = (await response.json()) as Photo[];
-    return data;
-  } catch (error) {
-    Toast.show({
-      type: 'error',
-      text1: 'Error!',
-      text2: 'Image fetching failed',
-    });
-  }
-});
+export const getTopImages = createAsyncThunk(
+  'images/getImages',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get<Photo[]>(
+        'https://jsonplaceholder.typicode.com/photos',
+      );
+      const data = response.data.slice(0, 10);
+      return data;
+    } catch (error) {
+      return rejectWithValue({ error: 'Image fetching failed' });
+    }
+  },
+);
 
 export const getBottomImages = createAsyncThunk(
   'images/getImagesBottom',
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(
+      const response = await axios.get<Photo[]>(
         'https://jsonplaceholder.typicode.com/photos',
       );
-      const data = (await response.json()) as Photo[];
+      const data = response.data.slice(0, 10);
       return data;
     } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error!',
-        text2: 'Image fetching failed',
-      });
+      return rejectWithValue({ error: 'Image fetching failed' });
     }
   },
 );
@@ -61,9 +58,7 @@ export const imagesSlice = createSlice({
       })
       .addCase(getTopImages.fulfilled, (state, action) => {
         state.isTopLoading = false;
-        if (action.payload) {
-          state.topImages = action.payload.slice(0, 10);
-        }
+        state.topImages = action.payload;
       })
       .addCase(getTopImages.rejected, state => {
         state.isTopLoading = false;
@@ -73,9 +68,7 @@ export const imagesSlice = createSlice({
       })
       .addCase(getBottomImages.fulfilled, (state, action) => {
         state.isBottomLoading = false;
-        if (action.payload) {
-          state.bottomImages = action.payload.slice(0, 10);
-        }
+        state.bottomImages = action.payload;
       })
       .addCase(getBottomImages.rejected, state => {
         state.isBottomLoading = false;

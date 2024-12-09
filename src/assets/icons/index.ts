@@ -13,6 +13,7 @@ import profile_back from './profile-back.png';
 import logout from './logout.png';
 import photo_camera_white from './photo-camera-white.png';
 import chat from './chat.png';
+import arrow_light from './arrow-light.png';
 export default {
   email_icon,
   lock_icon,
@@ -29,4 +30,5 @@ export default {
   logout,
   photo_camera_white,
   chat,
+  arrow_light,
 };

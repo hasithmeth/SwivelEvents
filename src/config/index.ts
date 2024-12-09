@@ -29,6 +29,7 @@ export const colors = {
   headerBorder: '#E1E2E4',
   bottomTabsElements: '#8F9193',
   failedText: '#DB2424',
+  mediumBorder: '#C5C6C8',
 };
 
 export const staticOrganizers = [
