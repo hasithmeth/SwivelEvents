@@ -96,6 +96,7 @@ const EditProfile: React.FC<IEditProfile> = ({ navigation }) => {
                 setActivity={setActivity}
                 setPhotoURL={setPhotoURL}
                 customTopMargin={24}
+                displayIcon
               />
               <View style={styles.divider} />
               <InfoPanel

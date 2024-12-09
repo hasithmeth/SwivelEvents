@@ -11,6 +11,7 @@ import home from './home.png';
 import more from './more.png';
 import profile_back from './profile-back.png';
 import logout from './logout.png';
+import photo_camera_white from './photo-camera-white.png';
 export default {
   email_icon,
   lock_icon,
@@ -25,4 +26,5 @@ export default {
   more,
   profile_back,
   logout,
+  photo_camera_white,
 };

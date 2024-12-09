@@ -19,6 +19,7 @@ interface IProfileImage {
   setActivity?: React.Dispatch<React.SetStateAction<boolean>>;
   readonly?: boolean;
   customTopMargin?: number;
+  displayIcon?: boolean;
 }
 
 const ProfileImage: React.FC<IProfileImage> = ({
@@ -27,6 +28,7 @@ const ProfileImage: React.FC<IProfileImage> = ({
   setActivity,
   readonly,
   customTopMargin = 32,
+  displayIcon = false,
 }) => {
   const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -111,10 +113,18 @@ const ProfileImage: React.FC<IProfileImage> = ({
             backgroundColor={colors.profilePlaceholder}
           />
         ) : selectedProfile || photoURL ? (
-          <FastImage
-            source={{ uri: selectedProfile || photoURL }}
-            style={styles.profileImage}
-          />
+          <>
+            <FastImage
+              source={{ uri: selectedProfile || photoURL }}
+              style={styles.profileImage}
+            />
+            {displayIcon ? (
+              <FastImage
+                source={icons.photo_camera_white}
+                style={styles.iconDisplay}
+              />
+            ) : null}
+          </>
         ) : (
           <FastImage source={icons.photo_camera} style={styles.icon} />
         )}
@@ -137,6 +147,11 @@ const styles = StyleSheet.create({
   icon: {
     height: 24,
     width: 24,
+  },
+  iconDisplay: {
+    height: 24,
+    width: 24,
+    position: 'absolute',
   },
   profileImage: {
     height: 116,
