@@ -15,6 +15,7 @@ interface IInfoPanel {
   errors?: { [key: string]: string | undefined };
   touched?: { [key: string]: boolean | undefined };
   dividerHeight?: number;
+  readonly?: boolean;
 }
 
 const InfoPanel: React.FC<IInfoPanel> = ({
@@ -24,6 +25,7 @@ const InfoPanel: React.FC<IInfoPanel> = ({
   handleBlur,
   errors,
   touched,
+  readonly,
 }) => {
   const txtLastNameRef = useRef<RNTextInput>(null);
   const txtEmailRef = useRef<RNTextInput>(null);
@@ -65,6 +67,7 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onChangeText={text => handleChange?.('firstName')(text)}
         onChangeFocus={() => handleBlur?.('firstName')}
         error={touched?.firstName && errors?.firstName}
+        readOnly={readonly}
       />
       <View style={styles.divider} />
       <TextInput
@@ -79,6 +82,7 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onChangeText={text => handleChange?.('lastName')(text)}
         onChangeFocus={() => handleBlur?.('lastName')}
         error={touched?.lastName && errors?.lastName}
+        readOnly={readonly}
       />
       <View style={styles.divider} />
       <TextInput
@@ -109,6 +113,7 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onChangeFocus={() => handleBlur?.('phone')}
         error={touched?.phone && errors?.phone}
         fontSize={16}
+        readOnly={readonly}
       />
       <View style={styles.divider} />
       <TextInput
@@ -123,6 +128,7 @@ const InfoPanel: React.FC<IInfoPanel> = ({
         onChangeFocus={() => handleBlur?.('mailingAddress')}
         error={touched?.mailingAddress && errors?.mailingAddress}
         fontSize={16}
+        readOnly={readonly}
       />
       <View style={styles.divider} />
     </>

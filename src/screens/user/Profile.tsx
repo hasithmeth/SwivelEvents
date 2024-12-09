@@ -44,7 +44,7 @@ const Profile: React.FC<IProfile> = ({ navigation }) => {
           )}
         </View>
         <View style={styles.divider} />
-        <InfoPanel values={values} />
+        <InfoPanel values={values} readonly />
       </ScrollView>
       <View style={styles.buttonContainer}>
         <Button label={'Edit'} onPress={handleEditPress} noDirection />
