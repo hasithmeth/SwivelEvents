@@ -35,7 +35,6 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
   const txtPasswordRef = useRef<RNTextInput>(null);
 
   const dispatch = useAppDispatch();
-  // const activity = useAppSelector(selectActivity);
   const { isLoading } = useAppSelector(selectAuth);
 
   const insets = useSafeAreaInsets();
@@ -45,7 +44,6 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
   };
 
   const handleLogin = (values: { email: string; password: string }) => {
-    // dispatch(setActivity(true));
     dispatch(signIn(values));
   };
 
@@ -90,6 +88,7 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
                 onChangeText={handleChange('email')}
                 onChangeFocus={handleBlur('email')}
                 error={touched.email && errors.email}
+                accessibilityLabel={'Email'}
               />
               <View style={styles.divider} />
               <TextInput
@@ -106,6 +105,7 @@ const Login: React.FC<ILogin> = ({ navigation }) => {
                 onChangeText={handleChange('password')}
                 onChangeFocus={handleBlur('password')}
                 error={touched.password && errors.password}
+                accessibilityLabel={'Password'}
               />
               <View style={styles.divider} />
               <View style={styles.restorePasswordComponent}>
