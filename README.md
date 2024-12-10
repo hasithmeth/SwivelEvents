@@ -13,7 +13,6 @@ A fully featured React Native application built from the ground up using the Rea
 - [Screens & UI](#screens--ui)
 - [State Management](#state-management)
 - [Data & Services](#data--services)
-- [Contribution Guidelines](#contribution-guidelines)
 - [License](#license)
 - [Author](#author)
 
